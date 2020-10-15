@@ -30,13 +30,6 @@ const spentMoney2 = +prompt('Во сколько это обойдется?', '5
 
 // 1) Функция возвращает сумму всех обязательных расходов за месяц
 const getExpensesMonth = (spentMoney1 = 0, spentMoney2 = 0) => {
-    // if (!spentMoney1) {
-    //     spentMoney1 = 0;
-    // }
-    // if (!spentMoney2) {
-    //     spentMoney2 = 0;
-    // }
-
     return spentMoney1 + spentMoney2;
 };
 
