@@ -4,6 +4,17 @@
 const isNumber = function(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 };
+// Функция проверки на буквы!
+const isLine = function(s) {
+    return isNaN(parseFloat(s)) && !isFinite(s);
+};
+// Функция первой заглавной буквы!
+const upperCase = function(u) {
+    return u.map(function(word) {
+        return word[0].toUpperCase() + word.substr(1);
+    })
+    .join(', ');
+};
 
 // Месячный доход
 let money; 
@@ -24,6 +35,8 @@ const appData = {
     expenses: {},
     addExpenses: [],
     deposit: false,
+    percentDeposit: 0,
+    moneyDeposit: 0,
     mission: 100000,
     period: 12,
     budget: +money,
@@ -32,21 +45,43 @@ const appData = {
     expensesMonth: 0,
     
     asking: function() {
+        let itemIncome;
+        let cashIncome;
+
+        if(confirm('Есть ли у вас дополнительный источник заработка?')) {
+             
+            do {
+                itemIncome = prompt('Какой у вас дополнительный заработок?', 'Freeelance');
+            } while (!isLine(itemIncome));
+            
+            do {
+                cashIncome = prompt('Сколько в месяц вы на этом зарабатываете?', '25000');
+            } while (!isNumber(cashIncome));
+
+            appData.income[itemIncome] = cashIncome;
+        }
+
         let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период', 'машина, квартплата, школа');
             appData.addExpenses = addExpenses.trim().toLowerCase().split(', ');
+
+            console.log(upperCase(appData.addExpenses));
+
             appData.deposit = confirm('Есть ли у вас депозит в банке');
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         for (let i = 0; i < 2; i++) {
             
-            let expensesItem = prompt('Введите обязательную статью расходов?');
+            let expensesItem;
+            do {
+                expensesItem = prompt('Введите обязательную статью расходов?');
+            } while (!isLine(expensesItem));
+            
             let sum = +prompt('Во сколько это обойдется?');
                 
             while (!isNumber(sum)) {
                sum += +prompt('Во сколько это обойдется?'); 
             }
             appData.expenses[expensesItem] = +sum;
-        }    
+        }   
     },     
    
     // Функция возвращает сумму всех обязательных расходов за месяц
@@ -104,12 +139,33 @@ const appData = {
     
     },
 
+    // Функция работы с депозитом
+    getInfoDeposit: function() {
+        if(appData.deposit) {
+
+            do {
+                appData.percentDeposit = prompt('Какой годовой процент?', '12');
+            } while (!isNumber(appData.percentDeposit));
+
+            do {
+                appData.moneyDeposit = prompt('Какая сумма заложена?', '15000');
+            } while (!isNumber(appData.moneyDeposit));
+
+        }
+    },
+
+    // Накопления депозита
+    calcSaveMoney: function() {
+        return appData.budgetMonth * appData.period;
+    }
+
 };
 appData.asking();
 appData.getBudget();
 appData.getExpensesMonth();
 appData.getTargetMonth();
 appData.targetMonth();
+appData.getInfoDeposit();
 
 console.log(appData.getStatusIncome());
 
