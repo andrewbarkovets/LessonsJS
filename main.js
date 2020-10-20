@@ -6,8 +6,8 @@ const isNumber = function(n) {
 };
 
 // Месячный доход
-let money,  
-    start = function() {
+let money; 
+const start = function() {
    
     do {
         money = prompt('Ваш месячный доход?', '50000');
@@ -18,7 +18,7 @@ let money,
 start();
 
 // Объект appData с переменными и методами
-let appData = {
+const appData = {
     income: {},
     addIncome: [],
     expenses: {},
@@ -26,7 +26,6 @@ let appData = {
     deposit: false,
     mission: 100000,
     period: 12,
-    constantFlow: [],
     budget: +money,
     budgetDay: 0,
     budgetMonth: 0,
@@ -34,37 +33,32 @@ let appData = {
     
     asking: function() {
         let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период', 'машина, квартплата, школа');
-            appData.addExpenses = addExpenses.toLowerCase().split(', ');
+            appData.addExpenses = addExpenses.trim().toLowerCase().split(', ');
             appData.deposit = confirm('Есть ли у вас депозит в банке');
-        
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            let sum = 0;
 
         for (let i = 0; i < 2; i++) {
-            appData.expenses = {};
-            appData.constantFlow[i] = prompt('Введите обязательную статью расходов?');
-            sum += +prompt('Во сколько это обойдется?');
+            
+            let expensesItem = prompt('Введите обязательную статью расходов?');
+            let sum = +prompt('Во сколько это обойдется?');
                 
             while (!isNumber(sum)) {
                sum += +prompt('Во сколько это обойдется?'); 
             }
-            appData.expenses[appData.constantFlow] = sum;
-        }
-       
-        return +sum;
-        
-        },     
+            appData.expenses[expensesItem] = +sum;
+        }    
+    },     
    
-
     // Функция возвращает сумму всех обязательных расходов за месяц
     getExpensesMonth: function() {
 
         for (let key in appData.expenses) {
-            appData.expensesMonth += appData.expenses[key];
+            appData.expensesMonth += +appData.expenses[key];
+
         }
         console.log('Расход за месяц:' + appData.expensesMonth);
         return appData.expensesMonth;
-        
+      
     },
 
     // Функция возвращает Накопления за месяц (Доходы минус расходы)
@@ -100,30 +94,24 @@ let appData = {
             return ('Введите данные!');
         }
     },
+    targetMonth: function() {
+    
+        if (appData.getTargetMonth() > 0) {
+            return console.log((`Цель будет достигнута за: ${appData.getTargetMonth()} месяца(ев)`));
+        } else if (appData.getTargetMonth() < 0) {
+            return console.log(('Цель не будет достигнута!'));
+        }
+    
+    },
 
 };
 appData.asking();
 appData.getBudget();
 appData.getExpensesMonth();
 appData.getTargetMonth();
-
-
-let quantityMonth = appData.getTargetMonth();
-const targetMonth = function() {
-    
-    if (quantityMonth > 0) {
-        return console.log((`Цель будет достигнута за: ${quantityMonth} месяца(ев)`));
-    } else if (quantityMonth < 0) {
-        return console.log(('Цель не будет достигнута!'));
-    }
-
-};
-targetMonth();
-
+appData.targetMonth();
 
 console.log(appData.getStatusIncome());
-
-
 
 for ( let key in appData) {
     console.log("Наша программа включает в себя данные: ");
