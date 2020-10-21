@@ -1,5 +1,27 @@
 'use strict';
 
+// Переменные ДЗ№9
+const calcStart = document.getElementById('start'),
+    incomeAdd = document.getElementsByTagName('button'),
+    expensesAdd = document.getElementsByTagName('button'),
+    depositCheck = document.querySelector('#deposit-check'),
+    additionalIncomeItem = document.querySelectorAll('.additional_income-item'),
+    budgetMonthValue = document.querySelector('.budget_month-value'), // в верстке стоит до budget_day-value
+    budgetDayValue = document.getElementsByClassName('budget_day-value'),
+    expensesMonthValue = document.getElementsByClassName('expenses_month-value'),
+    additionalIncomeValue = document.getElementsByClassName('additional_income-value'),
+    additionalExpensesValue = document.getElementsByClassName('additional_expenses-value'),
+    incomePeriodValue = document.getElementsByClassName('income_period-value'),
+    targetMonthValue = document.getElementsByClassName('target_month-value'),
+    salaryAmount = document.querySelector('.salary-amount'),
+    incomeTitle = document.querySelector('.income-title'),
+    incomeAmount = document.querySelector('.income-amount'),
+    expensesTitle = document.querySelector('.expenses-title'),
+    expensesAmount = document.querySelector('.expenses-amount'),
+    additionalExpensesItem = document.querySelector('.additional_expenses-item'),
+    periodSelect = document.querySelector('.period-select');
+
+
 // Функция проверки на число!
 const isNumber = function(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
