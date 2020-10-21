@@ -4,10 +4,7 @@
 const isNumber = function(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 };
-// Функция проверки на буквы!
-const isLine = function(s) {
-    return isNaN(parseFloat(s)) && !isFinite(s);
-};
+
 // Функция первой заглавной буквы!
 const upperCase = function(u) {
     return u.map(function(word) {
@@ -52,7 +49,7 @@ const appData = {
              
             do {
                 itemIncome = prompt('Какой у вас дополнительный заработок?', 'Freeelance');
-            } while (!isLine(itemIncome));
+            } while (isNumber(itemIncome));
             
             do {
                 cashIncome = prompt('Сколько в месяц вы на этом зарабатываете?', '25000');
@@ -73,7 +70,7 @@ const appData = {
             let expensesItem;
             do {
                 expensesItem = prompt('Введите обязательную статью расходов?');
-            } while (!isLine(expensesItem));
+            } while (isNumber(expensesItem));
             
             let sum = +prompt('Во сколько это обойдется?');
                 
