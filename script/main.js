@@ -4,7 +4,6 @@
 const calcStart = document.getElementById('start'),
     incomeAdd = document.getElementsByTagName('button')[0],
     expensesAdd = document.getElementsByTagName('button')[1],
-
     depositCheck = document.querySelector('#deposit-check'),
     additionalIncomeItem = document.querySelectorAll('.additional_income-item'),
     budgetMonthValue = document.querySelector('.budget_month-value'),
@@ -21,9 +20,6 @@ const calcStart = document.getElementById('start'),
     expensesAmount = document.querySelector('.expenses-amount'),
     additionalExpensesItem = document.querySelector('.additional_expenses-item'),
     periodSelect = document.querySelector('.period-select');
-
-console.log(incomeTitle);
-console.log(expensesTitle);
 
 // Функция проверки на число!
 const isNumber = function(n) {
