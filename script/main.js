@@ -1,7 +1,7 @@
 'use strict';
 
-// Переменные ДЗ№9
-let calcStart = document.getElementById('start'),
+// Переменные 
+const calcStart = document.getElementById('start'),
     btnPlus = document.getElementsByTagName('button'),
     incomePlus = btnPlus[0],
     expensesPlus = btnPlus[1],
@@ -16,14 +16,16 @@ let calcStart = document.getElementById('start'),
     targetMonthValue = document.getElementsByClassName('target_month-value')[0],
     salaryAmount = document.querySelector('.salary-amount'),
     incomeTitle = document.querySelectorAll('.income-title')[1],
-    incomeItems = document.querySelectorAll('.income-items'),
     expensesTitle = document.querySelectorAll('.expenses-title')[1],
-    expensesItems = document.querySelectorAll('.expenses-items'),
     additionalExpensesItem = document.querySelector('.additional_expenses-item'),
     periodSelect = document.querySelector('.period-select'),
     periodAmount = document.querySelector('.period-amount'),
     dataInputText = document.querySelectorAll('.data input[type=text]'),
     targetAmonth = document.querySelector('.target-amount');
+
+let incomeItems = document.querySelectorAll('.income-items'),
+    expensesItems = document.querySelectorAll('.expenses-items');
+    
 
 // Функция проверки на число!
 const isNumber = function(n) {
@@ -56,7 +58,7 @@ const appData = {
     // Месячный доход
     calcStart: function() {
 
-        appData.budget = +salaryAmount.value;
+        this.budget = +salaryAmount.value;
 
         this.getExpenses();
         this.getIncome();
@@ -159,7 +161,7 @@ const appData = {
                 expensesItems.value = '';
             }
             
-        });
+        }, expensesItems);
     },
 
     // Получение  доходов
@@ -170,14 +172,14 @@ const appData = {
             let cashIncome = item.querySelector('.income-amount').value; 
 
             if(itemIncome !== '' && cashIncome !== '') {
-                appData.income[itemIncome] = cashIncome;
+                this.income[itemIncome] = cashIncome;
                 
             }
-            for (let key in appData.income) {
-                appData.incomeMounts += +appData.income[key];
+            for (let key in this.income) {
+                this.incomeMounts += +this.income[key];
             }
             
-        });        
+        }, incomeItems);        
     },
 
     // Ввывод расходов
@@ -186,9 +188,9 @@ const appData = {
         addExpenses.forEach(function(item) {
             item = item.trim();
             if (item !== '') {
-                appData.addExpenses.push(item);
+                this.addExpenses.push(item);
             }
-        });
+        }, addExpenses);
     },
 
     // Возможные доходы
@@ -196,9 +198,9 @@ const appData = {
         additionalIncomeItem.forEach(function(item) {
             let itemValue = item.value.trim();
             if (itemValue !== '') {
-                appData.addIncome.push(itemValue);
+                this.addIncome.push(itemValue);
             }
-        });
+        }, additionalIncomeItem);
     },   
    
     // Функция возвращает сумму всех обязательных расходов за месяц
@@ -215,8 +217,8 @@ const appData = {
     // Функция возвращает Накопления за месяц (Доходы минус расходы)
     getBudget: function() {
 
-        if (!appData.budget) {
-            appData.budget = 0;
+        if (!this.budget) {
+            this.budget = 0;
         }
         // isNumber(salaryAmount.value);
         if(!isNumber(salaryAmount.value) && salaryAmount.value.trim() !== '') {
@@ -225,16 +227,16 @@ const appData = {
             salaryAmount.value = '';
         }
 
-        appData.budgetMonth = appData.budget + appData.incomeMounts - appData.expensesMonth;
+        this.budgetMonth = this.budget + this.incomeMounts - this.expensesMonth;
         // budgetDay высчитываем исходя из значения месячного накопления
-        appData.budgetDay = Math.floor(appData.budgetMonth / 30);
+        this.budgetDay = Math.floor(this.budgetMonth / 30);
 
     },
 
     // getTargetMonth -  Подсчитывает за какой период будет достигнута цель
     getTargetMonth: function() {
 
-        return Math.ceil(targetAmonth.value / appData.budgetMonth);
+        return Math.ceil(targetAmonth.value / this.budgetMonth);
         
     },
     
@@ -265,29 +267,29 @@ const appData = {
 
     // Функция работы с депозитом
     getInfoDeposit: function() {
-        appData.deposit = confirm('Есть ли у вас депозит в банке');
-        if(appData.deposit) {
+        this.deposit = confirm('Есть ли у вас депозит в банке');
+        if(this.deposit) {
 
             do {
-                appData.percentDeposit = prompt('Какой годовой процент?', '12');
-            } while (!isNumber(appData.percentDeposit));
+                this.percentDeposit = prompt('Какой годовой процент?', '12');
+            } while (!isNumber(this.percentDeposit));
 
             do {
-                appData.moneyDeposit = prompt('Какая сумма заложена?', '15000');
-            } while (!isNumber(appData.moneyDeposit));
+                this.moneyDeposit = prompt('Какая сумма заложена?', '15000');
+            } while (!isNumber(this.moneyDeposit));
 
         }
     },
 
     // Накопления депозита
     calcSaveMoney: function() {
-        return appData.budgetMonth * periodSelect.value;
+        return this.budgetMonth * periodSelect.value;
     },
 
     // Число под input type range
     getPeriodAmount: function() {
         document.querySelector('.period-amount').textContent = periodSelect.value;
-        incomePeriodValue.value = appData.calcSaveMoney();
+        incomePeriodValue.value = this.calcSaveMoney();
     },
 
     // Изминения при нажатии на инпут
@@ -298,11 +300,10 @@ const appData = {
 };
 
 //1) Привязать контекст вызова функции start к appData 
-const foo = appData.calcStart.bind(appData);
+
 
 appData.blockStart();
-calcStart.addEventListener('click', foo);
-
+calcStart.addEventListener('click', appData.calcStart.bind(appData));
 expensesPlus.addEventListener('click', appData.addExpensesBlock);
 incomePlus.addEventListener('click', appData.addIncomeBlock);
 periodSelect.addEventListener('input', appData.getPeriodAmount);
