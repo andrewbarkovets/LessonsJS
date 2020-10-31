@@ -67,9 +67,9 @@ const appData = {
         this.getTargetMonth();
         this.targetMonth();
         this.getAddIncome();
-        this.getPeriodAmount();
-        this.getAddExpenses();   
+        this.getAddExpenses();
         this.getBudget();
+        this.getPeriodAmount();
         this.showResult();
 
         // Замена 
@@ -291,13 +291,15 @@ const appData = {
 
     // Накопления депозита
     calcSaveMoney: function() {
+        
         return this.budgetMonth * periodSelect.value;
     },
 
     // Число под input type range
     getPeriodAmount: function() {
+        
         document.querySelector('.period-amount').textContent = periodSelect.value;
-        incomePeriodValue.value = this.calcSaveMoney();
+        incomePeriodValue.value = appData.calcSaveMoney();
     },
 
     // Изминения при нажатии на инпут
