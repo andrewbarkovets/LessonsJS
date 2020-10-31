@@ -21,6 +21,7 @@ const calcStart = document.getElementById('start'),
     periodSelect = document.querySelector('.period-select'),
     periodAmount = document.querySelector('.period-amount'),
     dataInputText = document.querySelectorAll('.data input[type=text]'),
+    dataInput = document.querySelectorAll('input[type=text]'),
     targetAmonth = document.querySelector('.target-amount');
 
 let incomeItems = document.querySelectorAll('.income-items'),
@@ -81,18 +82,17 @@ const appData = {
         }
     },
 
-
     // Блокировать все input[type=text]
     blockInputs: function(disabled = true) {
         
-        dataInputText.forEach(function(items) {
+        document.querySelectorAll('.data input[type=text]').forEach(function(items) {
             items.disabled = disabled;
         });
     },
 
     // Reset
     reset: function() {
-       
+        const _this = this;
         for (let i = incomeItems.length - 1; i > 0; i--) {
             incomeItems[0].parentNode.removeChild(incomeItems[i]);
         }
@@ -103,15 +103,15 @@ const appData = {
         incomePlus.style.display = '';
         expensesPlus.style.display = '';
 
-        this.blockInputs(false);
+        _this.blockInputs(false);
 
-        dataInputText.forEach(function(item) {
+        dataInput.forEach(function(item) {
             item.value = '';
         });
 
-        this.getBudget();
+        _this.getBudget();
         periodSelect.value = periodAmount.textContent = 1;
-        this.blockStart();
+        _this.blockStart();
     },
 
     // Вывод результатов вычисления
@@ -129,7 +129,6 @@ const appData = {
     // Функция добавления инпута
     addExpensesBlock: function() {
 
-        
         let cloneExpensesItem = expensesItems[0].cloneNode(true);
         expensesItems[0].parentNode.insertBefore(cloneExpensesItem, expensesPlus);
         expensesItems = document.querySelectorAll('.expenses-items');
@@ -152,57 +151,62 @@ const appData = {
 
     // Получение  расходов
     getExpenses: function() {
+        const _this = this;
         expensesItems.forEach(function(item) {
+            
             let itemExpenses = item.querySelector('.expenses-title').value;
             let cashExpenses = item.querySelector('.expenses-amount').value;
             
             if(itemExpenses !== '' && cashExpenses !== '') {
-                this.expenses[itemExpenses] = cashExpenses;
+                _this.expenses[itemExpenses] = cashExpenses;
                 expensesItems.value = '';
             }
             
-        }, expensesItems);
+        });
     },
 
     // Получение  доходов
     getIncome: function() {
- 
+        const _this = this;
         incomeItems.forEach(function(item) {
+
             let itemIncome = item.querySelector('.income-title').value;
             let cashIncome = item.querySelector('.income-amount').value; 
 
             if(itemIncome !== '' && cashIncome !== '') {
-                this.income[itemIncome] = cashIncome;
+                _this.income[itemIncome] = cashIncome;
                 
             }
-            for (let key in this.income) {
-                this.incomeMounts += +this.income[key];
+            for (let key in _this.income) {
+                _this.incomeMounts += +_this.income[key];
             }
             
-        }, incomeItems);        
+        });        
     },
 
     // Ввывод расходов
     getAddExpenses: function() {
+        const _this = this;
         let addExpenses = additionalExpensesItem.value.split(',');
         addExpenses.forEach(function(item) {
             item = item.trim();
             if (item !== '') {
-                this.addExpenses.push(item);
+                _this.addExpenses.push(item);
             }
-        }, addExpenses);
+        });
     },
 
     // Возможные доходы
     getAddIncome: function() {
+        const _this = this;
         additionalIncomeItem.forEach(function(item) {
             let itemValue = item.value.trim();
             if (itemValue !== '') {
                 
-                this.addIncome.push(itemValue);
+                _this.addIncome.push(itemValue);
                 
             }
-        }, additionalIncomeItem);
+        });
     },   
    
     // Функция возвращает сумму всех обязательных расходов за месяц
@@ -214,6 +218,7 @@ const appData = {
         }
         
         return this.expensesMonth;
+
     },
 
     // Функция возвращает Накопления за месяц (Доходы минус расходы)
@@ -256,6 +261,7 @@ const appData = {
         }   else {
             return ('Введите данные!');
         }
+
     },
     targetMonth: function() {
     
@@ -301,17 +307,16 @@ const appData = {
     
 };
 
-//1) Привязать контекст вызова функции start к appData 
-
-
+// Привязать контекст вызова функции start к appData 
 appData.blockStart();
 calcStart.addEventListener('click', appData.calcStart.bind(appData));
+
 expensesPlus.addEventListener('click', appData.addExpensesBlock);
 incomePlus.addEventListener('click', appData.addIncomeBlock);
 periodSelect.addEventListener('input', appData.getPeriodAmount);
 salaryAmount.addEventListener('input', appData.blockStart);
 
-// for ( let key in appData) {
-//     console.log("Наша программа включает в себя данные: ");
-//     console.log(key, appData[key]);
-// }
+for ( let key in appData) {
+    console.log("Наша программа включает в себя данные: ");
+    console.log(key, appData[key]);
+}
