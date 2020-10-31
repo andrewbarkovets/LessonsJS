@@ -299,7 +299,7 @@ const appData = {
     getPeriodAmount: function() {
         
         document.querySelector('.period-amount').textContent = periodSelect.value;
-        incomePeriodValue.value = appData.calcSaveMoney();
+        incomePeriodValue.value = this.calcSaveMoney();
     },
 
     // Изминения при нажатии на инпут
