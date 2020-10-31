@@ -85,8 +85,8 @@ const appData = {
     // Блокировать все input[type=text]
     blockInputs: function(disabled = true) {
         
-        dataInputText.forEach(function(item) {
-            item.disabled = disabled;
+        dataInputText.forEach(function(items) {
+            items.disabled = disabled;
         });
     },
 
@@ -128,10 +128,10 @@ const appData = {
 
     // Функция добавления инпута
     addExpensesBlock: function() {
+
         
         let cloneExpensesItem = expensesItems[0].cloneNode(true);
         expensesItems[0].parentNode.insertBefore(cloneExpensesItem, expensesPlus);
-        
         expensesItems = document.querySelectorAll('.expenses-items');
         if(expensesItems.length === 3) {
             expensesPlus.style.display = 'none';
@@ -157,7 +157,7 @@ const appData = {
             let cashExpenses = item.querySelector('.expenses-amount').value;
             
             if(itemExpenses !== '' && cashExpenses !== '') {
-                appData.expenses[itemExpenses] = cashExpenses;
+                this.expenses[itemExpenses] = cashExpenses;
                 expensesItems.value = '';
             }
             
@@ -198,7 +198,9 @@ const appData = {
         additionalIncomeItem.forEach(function(item) {
             let itemValue = item.value.trim();
             if (itemValue !== '') {
+                
                 this.addIncome.push(itemValue);
+                
             }
         }, additionalIncomeItem);
     },   
