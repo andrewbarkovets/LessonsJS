@@ -117,11 +117,6 @@ class AppData {
         additionalIncomeValue.value = this.addIncome.join(', ');
         targetMonthValue.value = this.getTargetMonth();
         incomePeriodValue.value = this.calcSaveMoney();
-        // Число под input type range
-        periodSelect.addEventListener('input', () => {
-            document.querySelector('.period-amount').textContent = periodSelect.value;
-            incomePeriodValue.value = this.calcSaveMoney();
-        });
 
     }
 
@@ -308,6 +303,11 @@ class AppData {
         expensesPlus.addEventListener('click', this.addExpensesBlock);
         incomePlus.addEventListener('click', this.addIncomeBlock);
         salaryAmount.addEventListener('input', this.blockStart);
+        // Число под input type range
+        periodSelect.addEventListener('input', () => {
+            document.querySelector('.period-amount').textContent = periodSelect.value;
+            incomePeriodValue.value = this.calcSaveMoney();
+        });
     }
 }
 
