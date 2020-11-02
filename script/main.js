@@ -91,7 +91,6 @@ AppData.prototype.calcStart = function() {
     
 };
 
-
 // Блокировать все input[type=text]
 AppData.prototype.blockInputs = function(disabled = true) {
         
