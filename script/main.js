@@ -119,6 +119,19 @@ AppData.prototype.reset = function() {
         item.value = '';
     });
 
+    this.income = {};
+    this.addIncome = [];
+    this.expenses = {};
+    this.addExpenses = [];
+    this.deposit = false;
+    this.percentDeposit = 0;
+    this.moneyDeposit = 0;
+    this.budget = 0;
+    this.budgetDay = 0;
+    this.budgetMonth = 0;
+    this.expensesMonth = 0;
+    this.incomeMounts = 0;
+
     _this.getBudget();
     periodSelect.value = periodAmount.textContent = 1;
     _this.blockStart();
