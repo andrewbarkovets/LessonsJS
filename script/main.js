@@ -61,13 +61,19 @@ class AppData {
         this.showResult();
 
         // Замена 
-        if (calcStart.textContent === 'Рассчитать') {
+        // isNumber(salaryAmount.value);
+        if (!this.isNumber(salaryAmount.value) && salaryAmount.value.trim() !== '') {
+            salaryAmount.setAttribute('required', true);
+            alert('Введите сумму в поле "Месячный доход"!');
+            salaryAmount.value = '';
+        } else if (calcStart.textContent === 'Рассчитать') {
             this.blockInputs();
             calcStart.textContent = 'Сбросить';
         } else {
             calcStart.textContent = 'Рассчитать';
             this.reset();
         }
+        
     }
 
     // Метод проверки на число!
@@ -221,12 +227,6 @@ class AppData {
 
         if (!this.budget) {
             this.budget = 0;
-        }
-        // isNumber(salaryAmount.value);
-        if (!this.isNumber(salaryAmount.value) && salaryAmount.value.trim() !== '') {
-            salaryAmount.setAttribute('required', true);
-            alert('Введите сумму в поле "Месячный доход"!');
-            salaryAmount.value = '';
         }
 
         this.budgetMonth = this.budget + this.incomeMounts - this.expensesMonth;
