@@ -63,6 +63,16 @@ const AppData = function() {
 
 AppData.prototype.calcStart = function() {
 
+    // Замена 
+    
+    if(!isNumber(salaryAmount.value)) {
+        alert('Введите сумму в поле "Месячный доход"!');
+            this.reset();
+    } 
+
+    calcCancel.style.display = 'block';
+    calcStart.style.display = 'none';
+
     this.budget = +salaryAmount.value;
 
     this.getExpenses();
@@ -74,16 +84,6 @@ AppData.prototype.calcStart = function() {
     this.getAddExpenses();
     this.getBudget();
     this.showResult();
-
-    // Замена 
-    // isNumber(salaryAmount.value);
-    if(!isNumber(salaryAmount.value)) {
-        alert('Введите сумму в поле "Месячный доход"!');
-                this.reset();
-    } 
-
-    calcCancel.style.display = 'block';
-    calcStart.style.display = 'none';
 
 };
 
