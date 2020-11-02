@@ -61,8 +61,6 @@ const AppData = function() {
     
 };
 
-
-
 AppData.prototype.calcStart = function() {
 
     this.budget = +salaryAmount.value;
@@ -79,22 +77,22 @@ AppData.prototype.calcStart = function() {
 
     // Замена 
     // isNumber(salaryAmount.value);
-    if(!isNumber(salaryAmount.value) && salaryAmount.value.trim() !== '') {
+    if(isNumber(salaryAmount.value)) {
 
-        alert('Введите сумму в поле "Месячный доход"!');
-        salaryAmount.value = '';
-        // this.reset();
-    } 
-    
-    if (calcStart.style.display !== 'block') {
-        this.blockInputs();
-        calcCancel.style.display = 'block';
-        calcStart.style.display = 'none';
+        if (calcStart.style.display !== 'block') {
+            this.blockInputs();
+            calcCancel.style.display = 'block';
+            calcStart.style.display = 'none';
+        } else {
+            calcCancel.style.display = 'none';
+            this.reset();
+        }
+
     } else {
-        calcCancel.style.display = 'none';
+        alert('Введите сумму в поле "Месячный доход"!');
         this.reset();
     }
-    
+
 };
 
 // Блокировать все input[type=text]
@@ -107,7 +105,9 @@ AppData.prototype.blockInputs = function(disabled = true) {
 
 // Reset
 AppData.prototype.reset = function() {
+
     const _this = this;
+
     for (let i = incomeItems.length - 1; i > 0; i--) {
         incomeItems[0].parentNode.removeChild(incomeItems[i]);
     }
@@ -126,8 +126,6 @@ AppData.prototype.reset = function() {
     dataInput.forEach(function(item) {
         item.value = '';
     });
-
-
 
     _this.getBudget();
     periodSelect.value = periodAmount.textContent = 1;
