@@ -2,6 +2,7 @@
 
 // Переменные 
 const calcStart = document.getElementById('start'),
+    calcCancel = document.getElementById('cancel'),
     btnPlus = document.getElementsByTagName('button'),
     incomePlus = btnPlus[0],
     expensesPlus = btnPlus[1],
@@ -47,6 +48,16 @@ class AppData {
     }
     calcStart() {
 
+        // Замена 
+    
+        if(!this.isNumber(salaryAmount.value)) {
+            alert('Введите сумму в поле "Месячный доход"!');
+                this.reset();
+        } 
+
+        calcCancel.style.display = 'block';
+        calcStart.style.display = 'none';
+
         this.budget = +salaryAmount.value;
 
         this.getExpenses();
@@ -59,20 +70,6 @@ class AppData {
         this.getBudget();
         this.isNumber();       
         this.showResult();
-
-        // Замена 
-        // isNumber(salaryAmount.value);
-        if (!this.isNumber(salaryAmount.value) && salaryAmount.value.trim() !== '') {
-            salaryAmount.setAttribute('required', true);
-            alert('Введите сумму в поле "Месячный доход"!');
-            salaryAmount.value = '';
-        } else if (calcStart.textContent === 'Рассчитать') {
-            this.blockInputs();
-            calcStart.textContent = 'Сбросить';
-        } else {
-            calcStart.textContent = 'Рассчитать';
-            this.reset();
-        }
         
     }
 
@@ -102,11 +99,27 @@ class AppData {
         incomePlus.style.display = '';
         expensesPlus.style.display = '';
 
+        calcCancel.style.display = 'none';
+        calcStart.style.display = 'block';
+
         this.blockInputs(false);
 
         dataInput.forEach((item) => {
             item.value = '';
         });
+
+        this.income = {};
+        this.addIncome = [];
+        this.expenses = {};
+        this.addExpenses = [];
+        this.deposit = false;
+        this.percentDeposit = 0;
+        this.moneyDeposit = 0;
+        this.budget = 0;
+        this.budgetDay = 0;
+        this.budgetMonth = 0;
+        this.expensesMonth = 0;
+        this.incomeMounts = 0;
 
         this.getBudget();
         periodSelect.value = periodAmount.textContent = 1;
@@ -303,6 +316,7 @@ class AppData {
         expensesPlus.addEventListener('click', this.addExpensesBlock);
         incomePlus.addEventListener('click', this.addIncomeBlock);
         salaryAmount.addEventListener('input', this.blockStart);
+        calcCancel.addEventListener('click', this.reset.bind(this));
         // Число под input type range
         periodSelect.addEventListener('input', () => {
             document.querySelector('.period-amount').textContent = periodSelect.value;
