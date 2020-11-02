@@ -75,13 +75,20 @@ AppData.prototype.calcStart = function() {
     this.showResult();
 
     // Замена 
-    if (calcStart.textContent === 'Рассчитать') {
+    // isNumber(salaryAmount.value);
+    if(!isNumber(salaryAmount.value) && salaryAmount.value.trim() !== '') {
+        salaryAmount.setAttribute('required', true);
+        alert('Введите сумму в поле "Месячный доход"!');
+        salaryAmount.value = '';
+        this.reset();
+    } else if (calcStart.textContent === 'Рассчитать') {
         this.blockInputs();
         calcStart.textContent = 'Сбросить';
     } else {
         calcStart.textContent = 'Рассчитать';
         this.reset();
     }
+    
 };
 
 
@@ -236,12 +243,7 @@ AppData.prototype.getBudget = function() {
     if (!this.budget) {
         this.budget = 0;
     }
-    // isNumber(salaryAmount.value);
-    if(!isNumber(salaryAmount.value) && salaryAmount.value.trim() !== '') {
-        salaryAmount.setAttribute('required', true);
-        alert('Введите сумму в поле "Месячный доход"!');
-        salaryAmount.value = '';
-    }
+    
 
     this.budgetMonth = this.budget + this.incomeMounts - this.expensesMonth;
     // budgetDay высчитываем исходя из значения месячного накопления
@@ -320,9 +322,8 @@ AppData.prototype.eventListener = function() {
 };
   
 const appData = new AppData();
-console.log(appData);
 appData.eventListener();  
-console.log(appData);
+
 
 for ( let key in appData) {
     console.log("Наша программа включает в себя данные: ");
