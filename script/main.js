@@ -2,6 +2,7 @@
 
 // Переменные 
 const calcStart = document.getElementById('start'),
+    calcCancel = document.getElementById('cancel'),
     btnPlus = document.getElementsByTagName('button'),
     incomePlus = btnPlus[0],
     expensesPlus = btnPlus[1],
@@ -60,6 +61,8 @@ const AppData = function() {
     
 };
 
+
+
 AppData.prototype.calcStart = function() {
 
     this.budget = +salaryAmount.value;
@@ -77,15 +80,18 @@ AppData.prototype.calcStart = function() {
     // Замена 
     // isNumber(salaryAmount.value);
     if(!isNumber(salaryAmount.value) && salaryAmount.value.trim() !== '') {
-        salaryAmount.setAttribute('required', true);
+
         alert('Введите сумму в поле "Месячный доход"!');
         salaryAmount.value = '';
-        this.reset();
-    } else if (calcStart.textContent === 'Рассчитать') {
+        // this.reset();
+    } 
+    
+    if (calcStart.style.display !== 'block') {
         this.blockInputs();
-        calcStart.textContent = 'Сбросить';
+        calcCancel.style.display = 'block';
+        calcStart.style.display = 'none';
     } else {
-        calcStart.textContent = 'Рассчитать';
+        calcCancel.style.display = 'none';
         this.reset();
     }
     
@@ -112,11 +118,16 @@ AppData.prototype.reset = function() {
     incomePlus.style.display = '';
     expensesPlus.style.display = '';
 
+    calcCancel.style.display = 'none';
+    calcStart.style.display = 'block';
+
     _this.blockInputs(false);
 
     dataInput.forEach(function(item) {
         item.value = '';
     });
+
+
 
     _this.getBudget();
     periodSelect.value = periodAmount.textContent = 1;
@@ -318,6 +329,7 @@ AppData.prototype.eventListener = function() {
     expensesPlus.addEventListener('click', this.addExpensesBlock);
     incomePlus.addEventListener('click', this.addIncomeBlock);
     salaryAmount.addEventListener('input', this.blockStart);
+    calcCancel.addEventListener('click', this.reset.bind(this));
 };
   
 const appData = new AppData();
