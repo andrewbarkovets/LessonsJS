@@ -83,6 +83,7 @@ AppData.prototype.calcStart = function() {
     this.getAddIncome();
     this.getAddExpenses();
     this.getBudget();
+    this.blockInputs();
     this.showResult();
 
 };
