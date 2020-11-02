@@ -101,14 +101,15 @@ AppData.prototype.reset = function() {
 
     const _this = this;
 
-    for (let i = incomeItems.length - 1; i > 0; i--) {
-        incomeItems[0].parentNode.removeChild(incomeItems[i]);
+    for (let i = 1; i < incomeItems.length; i++) {
+        incomeItems[i].parentNode.removeChild(incomeItems[i]);
+        incomePlus.style.display = 'block';
     }
     for (let i = expensesItems.length - 1; i > 0; i--) {
         expensesItems[0].parentNode.removeChild(expensesItems[i]);
     }
 
-    incomePlus.style.display = '';
+    
     expensesPlus.style.display = '';
 
     calcCancel.style.display = 'none';
@@ -171,7 +172,6 @@ AppData.prototype.addIncomeBlock = function() {
     
     let cloneIncomeItem = incomeItems[0].cloneNode(true);
     incomeItems[0].parentNode.insertBefore(cloneIncomeItem, incomePlus);
-    
     incomeItems = document.querySelectorAll('.income-items');
     if(incomeItems.length === 3) {
         incomePlus.style.display = 'none';
