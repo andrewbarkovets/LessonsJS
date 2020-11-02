@@ -77,21 +77,13 @@ AppData.prototype.calcStart = function() {
 
     // Замена 
     // isNumber(salaryAmount.value);
-    if(isNumber(salaryAmount.value)) {
-
-        if (calcStart.style.display !== 'block') {
-            this.blockInputs();
-            calcCancel.style.display = 'block';
-            calcStart.style.display = 'none';
-        } else {
-            calcCancel.style.display = 'none';
-            this.reset();
-        }
-
-    } else {
+    if(!isNumber(salaryAmount.value)) {
         alert('Введите сумму в поле "Месячный доход"!');
-        this.reset();
-    }
+                this.reset();
+    } 
+
+    calcCancel.style.display = 'block';
+    calcStart.style.display = 'none';
 
 };
 
@@ -332,10 +324,3 @@ AppData.prototype.eventListener = function() {
   
 const appData = new AppData();
 appData.eventListener();  
-
-
-for ( let key in appData) {
-    console.log("Наша программа включает в себя данные: ");
-    console.log(key, appData[key]);
-}
-
