@@ -49,7 +49,6 @@ class AppData {
     calcStart() {
 
         // Замена 
-    
         if(!this.isNumber(salaryAmount.value)) {
             alert('Введите сумму в поле "Месячный доход"!');
                 this.reset();
@@ -90,15 +89,15 @@ class AppData {
     // Reset
     reset() {
         
-        for (let i = incomeItems.length - 1; i > 0; i--) {
-            incomeItems[0].parentNode.removeChild(incomeItems[i]);
+        // Функция удаление clon - инпутов
+        for (let i = incomeItems.length - 1; i > 0 ; i--) {
+            incomeItems[i].remove(incomeItems[i]);
+            incomePlus.style.display = 'block';
         }
         for (let i = expensesItems.length - 1; i > 0; i--) {
-            expensesItems[0].parentNode.removeChild(expensesItems[i]);
+            expensesItems[i].remove(expensesItems[i]);
+            expensesPlus.style.display = 'block';
         }
-
-        incomePlus.style.display = '';
-        expensesPlus.style.display = '';
 
         calcCancel.style.display = 'none';
         calcStart.style.display = 'block';
@@ -146,6 +145,10 @@ class AppData {
         let cloneExpensesItem = expensesItems[0].cloneNode(true);
         expensesItems[0].parentNode.insertBefore(cloneExpensesItem, expensesPlus);
         expensesItems = document.querySelectorAll('.expenses-items');
+
+        cloneExpensesItem.querySelector('.expenses-title').value = '';
+        cloneExpensesItem.querySelector('.expenses-amount').value = '';
+
         if (expensesItems.length === 3) {
             expensesPlus.style.display = 'none';
         }
@@ -156,8 +159,11 @@ class AppData {
 
         let cloneIncomeItem = incomeItems[0].cloneNode(true);
         incomeItems[0].parentNode.insertBefore(cloneIncomeItem, incomePlus);
-
         incomeItems = document.querySelectorAll('.income-items');
+
+        cloneIncomeItem.querySelector('.income-title').value = '';
+        cloneIncomeItem.querySelector('.income-amount').value = '';
+
         if (incomeItems.length === 3) {
             incomePlus.style.display = 'none';
         }
@@ -217,9 +223,7 @@ class AppData {
         additionalIncomeItem.forEach((item) => {
             let itemValue = item.value.trim();
             if (itemValue !== '') {
-
                 this.addIncome.push(itemValue);
-
             }
         });
     }
@@ -229,9 +233,7 @@ class AppData {
 
         for (let key in this.expenses) {
             this.expensesMonth += +this.expenses[key];
-
         }
-
         return this.expensesMonth;
 
     }
@@ -242,17 +244,9 @@ class AppData {
         if (!this.budget) {
             this.budget = 0;
         }
-
         this.budgetMonth = this.budget + this.incomeMounts - this.expensesMonth;
         // budgetDay высчитываем исходя из значения месячного накопления
         this.budgetDay = Math.floor(this.budgetMonth / 30);
-
-    }
-
-    // getTargetMonth 
-    getTargetMonth() {
-
-        return Math.ceil(targetAmonth.value / this.budgetMonth);
 
     }
 
@@ -271,6 +265,11 @@ class AppData {
             return ('Введите данные!');
         }
 
+    }
+
+    // getTargetMonth 
+    getTargetMonth() {
+        return Math.ceil(targetAmonth.value / this.budgetMonth);
     }
 
     // метод подсчета за какое время будет достигнута цель
