@@ -7,6 +7,9 @@ const calcStart = document.getElementById('start'),
     incomePlus = btnPlus[0],
     expensesPlus = btnPlus[1],
     depositCheck = document.querySelector('#deposit-check'),
+    depositBank = document.querySelector('.deposit-bank'), 
+    depositAmount = document.querySelector('.deposit-amount'), 
+    depositPercent = document.querySelector('.deposit-percent'), 
     additionalIncomeItem = document.querySelectorAll('.additional_income-item'),
     budgetMonthValue = document.getElementsByClassName('budget_month-value')[0],
     budgetDayValue = document.getElementsByClassName('budget_day-value')[0],
@@ -66,6 +69,7 @@ class AppData {
         this.targetMonth();
         this.getAddIncome();
         this.getAddExpenses();
+        this.getInfoDeposit();
         this.getBudget();
         this.blockInputs();
         this.isNumber();       
@@ -121,6 +125,9 @@ class AppData {
         this.expensesMonth = 0;
         this.incomeMounts = 0;
 
+        depositCheck.checked = false;
+        this.depositHandler();
+        this.changePercent();
         this.getBudget();
         periodSelect.value = periodAmount.textContent = 1;
         this.blockStart();
@@ -241,10 +248,12 @@ class AppData {
     // Метод возвращает Накопления за месяц (Доходы минус расходы)
     getBudget() {
 
+        const monthDeposit = this.moneyDeposit * (this.percentDeposit / 100);
+
         if (!this.budget) {
             this.budget = 0;
         }
-        this.budgetMonth = this.budget + this.incomeMounts - this.expensesMonth;
+        this.budgetMonth = this.budget + this.incomeMounts - this.expensesMonth + monthDeposit;
         // budgetDay высчитываем исходя из значения месячного накопления
         this.budgetDay = Math.floor(this.budgetMonth / 30);
 
@@ -285,17 +294,23 @@ class AppData {
 
     // метод работы с депозитом
     getInfoDeposit() {
-        this.deposit = confirm('Есть ли у вас депозит в банке');
+
         if (this.deposit) {
+            this.percentDeposit = depositPercent.value;
+            this.moneyDeposit = depositAmount.value;
+        }
 
-            do {
-                this.percentDeposit = prompt('Какой годовой процент?', '12');
-            } while (!this.isNumber(this.percentDeposit));
+    }
+    changePercent() {
+        const valueSelect = this.value;
 
-            do {
-                this.moneyDeposit = prompt('Какая сумма заложена?', '15000');
-            } while (!this.isNumber(this.moneyDeposit));
-
+        if (valueSelect === 'other') {
+            depositPercent.value = '';
+            depositPercent.style.display = 'inline-block';
+            this.depositPercent = depositPercent.value; 
+        } else {
+            depositPercent.value = valueSelect;
+            depositPercent.style.display = 'none';
         }
     }
 
@@ -304,10 +319,30 @@ class AppData {
         return this.budgetMonth * periodSelect.value;
     }
 
+    // Работа с депозитом!
+    depositHandler() {
+        if(depositCheck.checked) {
+            depositBank.style.display = 'inline-block';
+            depositAmount.style.display = 'inline-block'; 
+            this.deposit = true;
+            depositBank.addEventListener('change', this.changePercent);
+        } else {
+            depositBank.style.display = 'none';
+            depositAmount.style.display = 'none';
+            depositBank.value = '';
+            depositAmount.value = '';
+            depositPercent.value = '';
+            this.deposit = false;
+            depositBank.removeEventListener('change', this.changePercent);
+        }
+    }
+
     // Изминения при нажатии на инпут
     blockStart() {
         calcStart.disabled = !salaryAmount.value.trim();
     }
+
+    // addEventListener
     eventListener() {
 
         // Привязать контекст вызова функции start к appData 
@@ -322,6 +357,8 @@ class AppData {
             document.querySelector('.period-amount').textContent = periodSelect.value;
             incomePeriodValue.value = this.calcSaveMoney();
         });
+
+        depositCheck.addEventListener('change', this.depositHandler.bind(this));
     }
 }
 
