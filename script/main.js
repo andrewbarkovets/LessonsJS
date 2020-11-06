@@ -55,9 +55,12 @@ class AppData {
         if(!this.isNumber(salaryAmount.value)) {
             alert('Введите сумму в поле "Месячный доход"!');
                 return;
-        } else if (!this.isNumber(depositPercent.value)&& 
-        depositPercent.value < 0 || depositPercent.value > 100 ) {
+        } else if ( depositPercent.value < 0 || depositPercent.value > 100 ) {
             alert('Введите сумму в поле "Проценты" от 0 до 100!');
+            return;
+        } else if (!this.isNumber(depositPercent.value) || 
+        !this.isNumber(depositPercent.value)) {
+            alert('Введите сумму в поле "Сумма депозита" и "Проценты"');
             return;
         }
 
