@@ -348,6 +348,58 @@ class AppData {
     blockStart() {
         calcStart.disabled = !salaryAmount.value.trim();
     }
+    
+    // Ввод от 0 до 100
+    enterZeroHundred(e) {
+
+        let app = {
+            vars: {
+              input: document.querySelector('.deposit-percent'),
+              min: 0,
+              max: 100
+            },
+            
+            keyup: () => {
+              if(app.vars.input.value.length >= 1 && app.vars.input.value.length <= 2) {
+                setTimeout (function(){
+                  if(app.vars.input.value.length !== 0) {
+                    if(app.vars.input.value < app.vars.min) {
+                      app.vars.input.value = app.vars.min;
+                    }
+                  }
+                }, 500);
+              }
+              
+              if(app.vars.input.value.length >= 3) {
+                if(app.vars.input.value > app.vars.max) {
+                  app.vars.input.value = app.vars.max;
+                }
+               }
+            },
+            
+            init: function() {
+                app.vars.input.onkeyup = app.keyup;
+            }
+        };
+        app.init();
+
+        // Разрешаем: backspace, delete, tab и escape
+        if ( e.keyCode === 46 || e.keyCode === 8 || e.keyCode === 9 || e.keyCode === 27 ||
+            // Разрешаем: Ctrl+A
+            (e.keyCode === 65 && e.ctrlKey === true) ||
+            // Разрешаем: home, end, влево, вправо
+            (e.keyCode >= 35 && e.keyCode <= 39)) {
+            
+            // Ничего не делаем
+            return;
+        } else {
+            // Запрещаем все, кроме цифр на основной клавиатуре, а так же Num-клавиатуре
+            if ((e.keyCode < 48 || e.keyCode > 57) && (e.keyCode < 96 || e.keyCode > 100 )) {
+                e.preventDefault();
+            }
+        }
+        
+    }
 
     // addEventListener
     eventListener() {
@@ -366,6 +418,7 @@ class AppData {
         });
 
         depositCheck.addEventListener('change', this.depositHandler.bind(this));
+        depositPercent.addEventListener('keydown', this.enterZeroHundred.bind(this));
     }
 }
 
