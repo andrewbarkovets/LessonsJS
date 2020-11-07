@@ -360,24 +360,24 @@ class AppData {
             },
             
             keyup: () => {
-              if(app.vars.input.value.length >= 1 && app.vars.input.value.length <= 2) {
-                setTimeout (function(){
-                  if(app.vars.input.value.length !== 0) {
-                    if(app.vars.input.value < app.vars.min) {
-                      app.vars.input.value = app.vars.min;
+                if ( app.vars.input.value.length >= 1 && app.vars.input.value.length <= 2 ) {
+                    setTimeout (() =>{
+                    if ( app.vars.input.value.length !== 0 ) {
+                        if ( app.vars.input.value < app.vars.min ) {
+                        app.vars.input.value = app.vars.min;
+                        }
                     }
-                  }
-                }, 500);
-              }
-              
-              if(app.vars.input.value.length >= 3) {
-                if(app.vars.input.value > app.vars.max) {
-                  app.vars.input.value = app.vars.max;
+                    }, 500);
                 }
-               }
+              
+                if ( app.vars.input.value.length >= 3 ) {
+                    if( app.vars.input.value > app.vars.max ) {
+                    app.vars.input.value = app.vars.max;
+                    }
+                }
             },
             
-            init: function() {
+            init: () => {
                 app.vars.input.onkeyup = app.keyup;
             }
         };
